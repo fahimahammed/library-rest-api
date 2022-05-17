@@ -1,4 +1,3 @@
-FORMAT: 1A
 HOST: http://localhost:3000/
 
 # Library API
