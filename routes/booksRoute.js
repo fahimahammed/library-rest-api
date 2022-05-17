@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Books = require('../model/booksSchema');
 
+
 router.get('/books', async (req, res) => {
     try{
         const books = await Books.find();
@@ -34,9 +35,48 @@ router.delete('/books', async (req, res) => {
     }
 })
 
-// router.put('/books', async (req, res) => {
-//     res.send("You can not put in this endpoint!");
-// })
+
+
+router.get('/books/:bookname', async (req, res) => {
+    //console.log(req.params);
+    try{
+        const singleBook = await Books.findOne({name: req.params.bookname});
+        res.send(singleBook);
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
+router.delete('/books/:bookname', async (req, res)=>{
+    try{
+        const deleteBook = await Books.findOneAndDelete({name: req.params.bookname});
+        res.send("Book deleted..!");
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
+
+router.put('/books/:bookname', async (req, res)=>{
+    try{
+        const book = await Books.findOne({name: req.params.bookname});
+        book.name = req.body.name;
+        book.quantity = req.body.quantity;
+        book.author = req.body.author;
+        book.price = req.body.price;
+
+        const updateBook = await book.save();
+        res.send(updateBook);
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
+
+
 
 router.get('/books/:bookId', async (req, res) => {
     try{
@@ -57,6 +97,33 @@ router.delete('/books/:bookId', async (req, res)=>{
         res.send(err);
     }
 })
+
+router.put('/books/:bookId', async(req, res) => {
+    try{
+        const book = await Books.findById(req.params.bookId);
+        book.name = req.body.name;
+        book.quantity = req.body.quantity;
+        book.author = req.body.author;
+        book.price = req.body.price;
+
+        const updateBook = await book.save();
+        res.send(updateBook);
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
+router.get('/books/:bookId', async (req, res) => {
+    try{
+        const singleBook = await Books.findById(req.params.bookId);
+        res.send(singleBook);
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
 
 
 
