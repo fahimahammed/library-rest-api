@@ -24,10 +24,34 @@ router.post('/books', async (req, res) => {
     }
 })
 
+router.delete('/books', async (req, res) => {
+    try{
+        await Books.remove();
+        res.send("All books are removed from Database!");
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
+// router.put('/books', async (req, res) => {
+//     res.send("You can not put in this endpoint!");
+// })
+
 router.get('/books/:bookId', async (req, res) => {
     try{
         const singleBook = await Books.findById(req.params.bookId);
         res.send(singleBook);
+    }
+    catch(err){
+        res.send(err);
+    }
+})
+
+router.delete('/books/:bookId', async (req, res)=>{
+    try{
+        const deleteBook = await Books.findByIdAndDelete(req.params.bookId);
+        res.send("Book deleted..!");
     }
     catch(err){
         res.send(err);
